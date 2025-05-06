@@ -168,7 +168,7 @@ const Header = () => {
 
         {isMenuOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            <div className="px-2 pt-2 pb-3 space-y-1 max-h-[80vh] overflow-y-auto">
               {navItems.map((item) => (
                 <a
                   key={item.id}
