@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FiX, FiShoppingCart } from "react-icons/fi";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
+import { FaSearch } from "react-icons/fa";
+import TopBar from "./TopBar";
 
 
 
@@ -12,63 +14,124 @@ const Header = () => {
   const [cartCount, setCartCount] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const cartRef = useRef(null);
+  const searchRef = useRef(null);
 
   const navItems = [
-    { id: 1, name: "Home", href: "#" },
-    { id: 2, name: "Products", href: "#" },
-    { id: 3, name: "Categories", href: "#" },
-    { id: 4, name: "About", href: "#" },
-    { id: 5, name: "Contact", href: "#" }
+    { id: 1, name: "Trang chủ", href: "#" },
+    { id: 2, name: "Tay cầm FO4", href: "#" },
+    { id: 3, name: "Tay Cầm PS5", href: "#" },
+    { id: 4, name: "Tay Cầm Flydigi", href: "#" },
+    { id: 5, name: "Tay Cầm EasySMX", href: "#" },
+    { id: 5, name: "Tay Cầm BigBig Won", href: "#" },
+    { id: 5, name: "Tay Cầm PS4", href: "#" },
+    { id: 5, name: "Tay Cầm Xbox", href: "#" },
+    { id: 5, name: "Tay Cầm Gamesir", href: "#" },
+    { id: 5, name: "Tay Cầm P4 Plus", href: "#" },
+    { id: 5, name: "Tay Cầm A102L", href: "#" },
+    { id: 5, name: "Tay Cầm Z03DP", href: "#" },
+    { id: 5, name: "Tay Cầm 8Bitdo", href: "#" },
+    { id: 5, name: "Tay Cầm Mobapad", href: "#" },
+    { id: 5, name: "Tay Cầm PXN", href: "#" },
+    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
+    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
+    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
+    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
+    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
+    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
+
+
+
+    
   ];
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const toggleCart = () => setIsCartOpen(!isCartOpen);
+  const toggleCart = () => {
+    setIsCartOpen(!isCartOpen);
+    setIsSearchOpen(false);
+  };
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen);
+    setIsCartOpen(false);
+  };
 
   useEffect(() => {
     document.body.className = isDarkMode ? "dark" : "light";
   }, [isDarkMode]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (cartRef.current && !cartRef.current.contains(event.target)) {
+        setIsCartOpen(false);
+      }
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <header className={`fixed w-full top-0 z-50 bg-white text-gray-800 shadow-md transition-colors duration-300`}>
+      <TopBar/>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-24">
+        <div className="flex items-center justify-between h-auto py-3">
           <div className="flex-shrink-0">
-            <img
-              className="h-16 w-auto"
-              src="https://shoptaycam.com/wp-content/uploads/2018/05/logo-1-khong-nen.png"
+           <a href="/">
+           <img
+              className="h-18 md:h-32 w-auto"
+              src="https://i.imgur.com/h8QCPkF.jpeg"
               alt="Logo"
             />
+           </a>
           </div>
 
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex flex-wrap gap-4 max-w-4xl">
             {navItems.map((item) => (
               <a
                 key={item.id}
                 href={item.href}
-                className="text-sm font-medium hover:text-blue-500 transition-colors duration-200"
+                className="text-sm font-medium hover:text-blue-500 transition-colors duration-200 whitespace-nowrap"
               >
                 {item.name}
               </a>
             ))}
           </nav>
 
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-            <button
-                className="p-3 rounded-full  hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-                onClick={toggleCart}
-                aria-label="Shopping cart"
+          <div className="flex items-center space-x-4 relative">
+            <div ref={searchRef}>
+              <button
+                className="p-3 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                onClick={toggleSearch}
+                aria-label="Search"
               >
                 <IoSearchSharp className="h-6 w-6 text-red-400" />
-                {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-blue-500 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
-                    {cartCount}
-                  </span>
-                )}
               </button>
+              {isSearchOpen && (
+                <div className="absolute top-full flex space-x-2 right-0 mt-2 w-[90vw] sm:w-[400px] md:w-[500px] lg:w-[500px] bg-white shadow-2xl rounded-lg p-4">
+                  {/* Search content */}
+                  <label className="flex-1">
+                    <input 
+                      type="search" 
+                      required 
+                      placeholder="Tìm kiếm sản phẩm" 
+                      className="input w-full border-0 focus:outline-none focus:ring-0 focus:border-none"
+                    />
+                  </label>
 
+                  <button className="btn btn-square  btn-sm sm:btn-md">
+                    <FaSearch className="text-sm sm:text-base"/>
+                  </button>
+                </div>
+              )}
+            </div>
 
-
+            <div ref={cartRef}>
               <button
                 className="p-2 rounded-full ml-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                 onClick={toggleCart}
@@ -81,13 +144,9 @@ const Header = () => {
                   </span>
                 )}
               </button>
-
-          
-
               {isCartOpen && (
-                <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4">
-                  <h3 className="text-lg font-semibold mb-2">Shopping Cart</h3>
-                  <p className="text-gray-500 dark:text-gray-400">Your cart is empty</p>
+                <div className="absolute top-full right-0 mt-2 w-80 bg-white shadow-lg rounded-lg p-4">
+                  {/* Cart content */}
                 </div>
               )}
             </div>
