@@ -93,8 +93,8 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`fixed w-full top-0 z-50 bg-white text-gray-800 shadow-md transition-colors duration-300 header-height`}>
-      <TopBar/>
+    <>
+        <header className={` w-full bg-white text-gray-800 shadow-md transition-colors duration-300 header-height`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-auto py-3">
           <div className="flex-shrink-0">
@@ -198,7 +198,8 @@ const Header = () => {
           </div>
         )}
       </div>
-    </header>
+    </header>  
+    </>
   );
 };
 
