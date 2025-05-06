@@ -19,27 +19,23 @@ const Header = () => {
   const searchRef = useRef(null);
 
   const navItems = [
-    { id: 1, name: "Trang chủ", href: "#" },
-    { id: 2, name: "Tay cầm FO4", href: "#" },
+    { id: 1, name: "Trang chủ", href: "/" },
+    { id: 2, name: "Tay cầm FO4", href: "/f04" },
     { id: 3, name: "Tay Cầm PS5", href: "#" },
     { id: 4, name: "Tay Cầm Flydigi", href: "#" },
     { id: 5, name: "Tay Cầm EasySMX", href: "#" },
-    { id: 5, name: "Tay Cầm BigBig Won", href: "#" },
-    { id: 5, name: "Tay Cầm PS4", href: "#" },
-    { id: 5, name: "Tay Cầm Xbox", href: "#" },
-    { id: 5, name: "Tay Cầm Gamesir", href: "#" },
-    { id: 5, name: "Tay Cầm P4 Plus", href: "#" },
-    { id: 5, name: "Tay Cầm A102L", href: "#" },
-    { id: 5, name: "Tay Cầm Z03DP", href: "#" },
-    { id: 5, name: "Tay Cầm 8Bitdo", href: "#" },
-    { id: 5, name: "Tay Cầm Mobapad", href: "#" },
-    { id: 5, name: "Tay Cầm PXN", href: "#" },
-    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
-    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
-    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
-    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
-    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
-    { id: 5, name: "Tay Cầm Nintendo Switch", href: "#" },
+    { id: 6, name: "Tay Cầm BigBig Won", href: "#" },
+    { id: 7, name: "Tay Cầm PS4", href: "#" },
+    { id: 8, name: "Tay Cầm Xbox", href: "#" },
+    { id: 9, name: "Tay Cầm Gamesir", href: "#" },
+    { id: 10, name: "Tay Cầm P4 Plus", href: "#" },
+    { id: 11, name: "Tay Cầm A102L", href: "#" },
+    { id: 12, name: "Tay Cầm Z03DP", href: "#" },
+    { id: 13, name: "Tay Cầm 8Bitdo", href: "#" },
+    { id: 14, name: "Tay Cầm Mobapad", href: "#" },
+    { id: 15, name: "Tay Cầm PXN", href: "#" },
+    { id: 16, name: "Tay Cầm Nintendo Switch", href: "#" },
+
 
 
 
@@ -76,8 +72,28 @@ const Header = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      const header = document.querySelector('.header-height');
+      if (header) {
+        const height = header.offsetHeight;
+        document.documentElement.style.setProperty('--header-height', `${height}px`);
+      }
+    };
+
+    // Update on mount
+    updateHeaderHeight();
+
+    // Update on window resize
+    window.addEventListener('resize', updateHeaderHeight);
+
+    return () => {
+      window.removeEventListener('resize', updateHeaderHeight);
+    };
+  }, []);
+
   return (
-    <header className={`fixed w-full top-0 z-50 bg-white text-gray-800 shadow-md transition-colors duration-300`}>
+    <header className={`fixed w-full top-0 z-50 bg-white text-gray-800 shadow-md transition-colors duration-300 header-height`}>
       <TopBar/>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-auto py-3">

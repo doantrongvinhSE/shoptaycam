@@ -6,7 +6,7 @@ import { SiZalo } from "react-icons/si";
 
 const Footer = () => {
     return (
-        <div className='mt-120'>
+        <div className=''>
             <footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
                 <nav>
                     <h6 className="footer-title">Thông tin liên hệ
