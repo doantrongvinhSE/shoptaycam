@@ -4,7 +4,6 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
 import { FaSearch } from "react-icons/fa";
-import TopBar from "./TopBar";
 
 
 

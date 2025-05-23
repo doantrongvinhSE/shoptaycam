@@ -7,10 +7,7 @@ import ProductDetailsComponent from '../../../components/ProductDetailsComponent
 const ProductDetailsPage = () => {
   return (
     <div>
-        <TopBar/>
-        <Header className=""/>
         <ProductDetailsComponent/>
-        <Footer/>
     </div>
   )
 }

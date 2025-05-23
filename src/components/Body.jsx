@@ -1,6 +1,5 @@
 import React from 'react'
-import Product from './Product'
-import ProductDetailsComponent from './ProductDetailsComponent/ProductDetailsComponent'
+import CardComponent from './CardComponent/CardComponent'
 
 const Body = () => {
     return (
@@ -9,45 +8,21 @@ const Body = () => {
             <p className='text-xl font-bold mb-6'>Sản phẩm bán chạy</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {/* Product Card */}
-
-                 <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                    <figure className="px-4 pt-4">
-                        <img
-                            src="https://laptopworld.vn/media/product/15729_72104_tay_cam_choi_game_khong_day_iine_tears_of_the_kingdom_design_controller.jpg"
-                            alt="Game Controller"
-                            className="rounded-xl h-48 w-full object-cover"
-                        />
-                    </figure>
-                    <div className="card-body">
-                        <h2 className="card-title text-lg">Game Controller</h2>
-                        <p className="text-sm text-gray-600">Tay cầm chơi game không dây chất lượng cao</p>
-                        <div className="card-actions justify-between items-center mt-4">
-                            <span className="text-lg font-bold text-primary">1.200.000đ</span>
-                            <button className="btn btn-primary btn-sm">Mua ngay</button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Duplicate card for demonstration */}
-                <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                    <figure className="px-4 pt-4">
-                        <img
-                            src="https://laptopworld.vn/media/product/15729_72104_tay_cam_choi_game_khong_day_iine_tears_of_the_kingdom_design_controller.jpg"
-                            alt="Game Controller"
-                            className="rounded-xl h-48 w-full object-cover"
-                        />
-                    </figure>
-                    <div className="card-body">
-                        <h2 className="card-title text-lg">Game Controller</h2>
-                        <p className="text-sm text-gray-600">Tay cầm chơi game không dây chất lượng cao</p>
-                        <div className="card-actions justify-between items-center mt-4">
-                            <span className="text-lg font-bold text-primary">1.200.000đ</span>
-                            <button className="btn btn-primary btn-sm">Mua ngay</button>
-                        </div>
-                    </div>
-                </div>
-
-                
+                <CardComponent/>
+                <CardComponent/>
+                <CardComponent/>
+                <CardComponent/>
+                <CardComponent/>
+                <CardComponent/>
+                <CardComponent/>
+            </div>
+            <div className="flex justify-center mt-12">
+                <button className="inline-flex items-center gap-2 px-6 py-2.5 border-2 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-white transition-all duration-300 text-sm font-medium tracking-wide">
+                    Xem thêm
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
             </div>
         </div>
        </div>

@@ -1,22 +1,28 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import HomePage from './pages/client/HomePage'
-import NotFoundPage from './pages/client/NotFoundPage/NotFoundPage'
-import ProductDetailsPage from './pages/client/ProductDetailsPage/ProductDetailsPage'
-
+import routes from './routes'
+import DefaultComponent from './components/DefaultComponent/DefaultComponent'
+import { Fragment } from 'react'
 
 function App() {
   return (
     <Router>
       <div className="app">
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          {/* Thêm các routes khác ở đây */}
-
-          <Route path="/san-pham" element={<ProductDetailsPage />} />
-
-
-          {/* Catch-all route for 404 */}
-        <Route path="*" element={<NotFoundPage />} />
+          {routes.map((route) => {
+            const Page = route.page
+            const Layout = route.isShowHeader ? DefaultComponent : Fragment
+            return (
+              <Route 
+                key={route.path}
+                path={route.path} 
+                element={
+                  <Layout>
+                    <Page />
+                  </Layout>
+                } 
+              />
+            )
+          })}
         </Routes>
       </div>
     </Router>
