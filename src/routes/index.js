@@ -10,7 +10,7 @@ const routes = [
         isShowHeader: false
     },
     {
-        path: '/san-pham',
+        path: '/product/:id',
         page: ProductDetailsPage,
         isShowHeader: true
     },

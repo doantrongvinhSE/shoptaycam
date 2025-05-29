@@ -10,7 +10,9 @@ import { FaSearch } from "react-icons/fa";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [cartCount, setCartCount] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -128,7 +130,7 @@ const Header = () => {
                 <IoSearchSharp className="h-6 w-6 text-red-400" />
               </button>
               {isSearchOpen && (
-                <div className="absolute top-full flex space-x-2 right-0 mt-2 w-[90vw] sm:w-[400px] md:w-[500px] lg:w-[500px] bg-white shadow-2xl rounded-lg p-4">
+                <div className="absolute z-30 top-full flex space-x-2 right-0 mt-2 w-[90vw] sm:w-[400px] md:w-[500px] lg:w-[500px] bg-white shadow-2xl rounded-lg p-4">
                   {/* Search content */}
                   <label className="flex-1">
                     <input 
