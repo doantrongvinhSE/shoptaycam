@@ -8,7 +8,7 @@ const Body = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/v1/products');
+                const response = await axios.get('https://taycambe.onrender.com/api/v1/products');
                 setProducts(response.data);
                 console.log(response.data);
             } catch (error) {
