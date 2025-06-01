@@ -8,7 +8,7 @@ import 'swiper/css/navigation';
 const Banner = () => {
     const banners = [
         {
-            image: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?ixlib=rb-4.0.3",
+            image: "https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-6/363386527_805011964421153_682121651691280033_n.png?_nc_cat=102&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeHnrSx0K_xL6IasUwsq6Z9Go0zsnLIcc22jTOycshxzbT13Hd7SkRObl5mllim7SsQcOixaynYvC9HDqRpUkzgk&_nc_ohc=82hE24G9inUQ7kNvwF0WZSQ&_nc_oc=Adm5Hn2fZeEJASNfh1ZkxV10N9Xu4ZrSlidJtF6-l8wYPZh3-RQ2rgjxijtPtpmDoXPLC4_Fm9n1P1ykx43ou1vA&_nc_zt=23&_nc_ht=scontent.fhan20-1.fna&_nc_gid=8SWk3Vob-R0pTcnwjqgw5g&oh=00_AfLf632E20zj0W5grh2hgdZdI2WkGtSIk4K1FomHRws3Rg&oe=68420DEB",
             title: "Tay Cầm Gaming Chuyên Nghiệp",
             description: "Nâng tầm trải nghiệm game của bạn với những tay cầm được thiết kế dành riêng cho game thủ."
         },

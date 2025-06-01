@@ -2,12 +2,15 @@ import HomePage from "../pages/client/HomePage";
 import NotFoundPage from "../pages/client/NotFoundPage/NotFoundPage";
 import ProductDetailsPage from "../pages/client/ProductDetailsPage/ProductDetailsPage";
 import TypeProductPage from "../pages/client/TypeProductPage/TypeProductPage";
+import CartPage from "../pages/client/CartPage/CartPage";
+import CheckoutPage from "../pages/client/CheckoutPage/CheckoutPage";
+import ThankYouPage from "../pages/client/ThankYouPage/ThankYouPage";
 
 const routes = [
     {
         path: '/',
         page: HomePage,
-        isShowHeader: false
+        isShowHeader: true
     },
     {
         path: '/product/:id',
@@ -17,6 +20,21 @@ const routes = [
     {
         path: '/danh-muc',
         page: TypeProductPage,
+        isShowHeader: true
+    },
+    {
+        path: '/cart',
+        page: CartPage,
+        isShowHeader: true
+    },
+    {
+        path: '/checkout',
+        page: CheckoutPage,
+        isShowHeader: true
+    },
+    {
+        path: '/thank-you',
+        page: ThankYouPage,
         isShowHeader: true
     },
     {

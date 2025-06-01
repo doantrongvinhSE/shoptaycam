@@ -22,16 +22,18 @@ const Body = () => {
     return (
         <div>
             <div className='max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8'>
-                <p className='text-xl font-bold mb-6'>Sản phẩm bán chạy</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <p className='text-xl font-bold mb-6'>TOP TAY CẦM FO4, FIFA, PES BÁN CHẠY NHẤT HÔM NAY</p>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
                     {products.map(product => (
                         <CardComponent
                             key={product._id}
                             _id={product._id}
                             name={product.name}
+                            description={product.description}
                             image={product.image}
                             price={product.variants?.[0]?.price}
-                            priceSale={product.priceSale}
+                            priceSale={product.variants?.[0]?.priceSale || product.priceSale}
+                            variants={product.variants}
                         />
                     ))}
                 </div>
@@ -42,6 +44,38 @@ const Body = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
+                </div>
+
+                <p className='text-xl font-bold mb-6 mt-8'>TAY CẦM SONY DUALSENSE 5 PS5 BÁN CHẠY</p>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
+                    {products.map(product => (
+                        <CardComponent
+                            key={product._id}
+                            _id={product._id}
+                            name={product.name}
+                            image={product.image}
+                            description={product.description}
+                            price={product.variants?.[0]?.price}
+                            priceSale={product.variants?.[0]?.priceSale || product.priceSale}
+                            variants={product.variants}
+                        />
+                    ))}
+                </div>
+
+                <p className='text-xl font-bold mb-6 mt-8'>TOP TAY CẦM CHƠI FLYDIGI BÁN CHẠY NHẤT</p>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
+                    {products.map(product => (
+                        <CardComponent
+                            key={product._id}
+                            _id={product._id}
+                            name={product.name}
+                            image={product.image}
+                            description={product.description}
+                            price={product.variants?.[0]?.price}
+                            priceSale={product.variants?.[0]?.priceSale || product.priceSale}
+                            variants={product.variants}
+                        />
+                    ))}
                 </div>
             </div>
         </div>
