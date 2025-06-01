@@ -145,11 +145,11 @@ const CardComponent = ({ _id, name, description, image, price, priceSale, varian
             <div className="px-4 pb-4">
                 <button
                     onClick={handleAddToCart}
-                    className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-3 px-4 rounded-xl hover:from-amber-600 hover:to-amber-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                    className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-2.5 px-3 rounded-lg hover:from-amber-600 hover:to-amber-700 transition-all duration-300 flex items-center justify-center gap-1.5 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-xs sm:text-sm"
                 >
-                    <div className="flex items-center gap-2">
-                        <FaShoppingCart className="w-4 h-4" />
-                        <span className="text-sm font-medium">Thêm vào giỏ</span>
+                    <div className="flex items-center gap-1.5">
+                        <FaShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        <span className="font-medium">Thêm vào giỏ</span>
                     </div>
                 </button>
             </div>
