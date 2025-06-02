@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import routes from './routes';
 import DefaultComponent from './components/DefaultComponent/DefaultComponent';
 import { Fragment } from 'react';
@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
     <CartProvider>
-      <Router>
+      <Router basename="/">
         <div className="app">
           <Routes>
             {routes.map((route) => {
@@ -29,6 +29,7 @@ function App() {
                 />
               );
             })}
+            <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
           <ScrollToTopButton />
           <ToastContainer
