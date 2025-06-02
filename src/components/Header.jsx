@@ -6,15 +6,22 @@ import { IoSearchSharp } from "react-icons/io5";
 import { FaSearch } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import CartDropdown from "./CartDropdown/CartDropdown";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const cartRef = useRef(null);
   const searchRef = useRef(null);
+  const searchTimeoutRef = useRef(null);
   const { getCartCount } = useCart();
+  const navigate = useNavigate();
 
   const navItems = [
     { id: 1, name: "Trang chủ", href: "/" },
@@ -82,6 +89,54 @@ const Header = () => {
     };
   }, []);
 
+  const handleSearch = async (keyword) => {
+    if (!keyword.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    try {
+      setIsSearching(true);
+      const response = await axios.get(`https://taycambe.onrender.com/api/v1/products/search?keyword=${encodeURIComponent(keyword)}`);
+      setSearchResults(response.data);
+    } catch (error) {
+      console.error('Lỗi khi tìm kiếm:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleSearchInputChange = (e) => {
+    const value = e.target.value;
+    setSearchInput(value);
+
+    // Clear previous timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    // Set new timeout for search
+    searchTimeoutRef.current = setTimeout(() => {
+      handleSearch(value);
+    }, 300); // 300ms delay
+  };
+
+  // Cleanup timeout on component unmount
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+    setIsSearchOpen(false);
+    setSearchInput("");
+    setSearchResults([]);
+  };
+
   return (
     <>
       <header className={`w-full bg-white text-gray-800 shadow-md transition-colors duration-300 header-height`}>
@@ -119,18 +174,49 @@ const Header = () => {
                   <IoSearchSharp className="h-6 w-6 text-red-400" />
                 </button>
                 {isSearchOpen && (
-                  <div className="absolute z-30 top-full flex space-x-2 right-0 mt-2 w-[90vw] sm:w-[400px] md:w-[500px] lg:w-[500px] bg-white shadow-2xl rounded-lg p-4">
-                    <label className="flex-1">
-                      <input 
-                        type="search" 
-                        required 
-                        placeholder="Tìm kiếm sản phẩm" 
-                        className="input w-full border-0 focus:outline-none focus:ring-0 focus:border-none"
-                      />
-                    </label>
-                    <button className="btn btn-square btn-sm sm:btn-md">
-                      <FaSearch className="text-sm sm:text-base"/>
-                    </button>
+                  <div className="absolute z-30 top-full flex flex-col right-0 mt-2 w-[90vw] sm:w-[400px] md:w-[500px] lg:w-[500px] bg-white shadow-2xl rounded-lg p-4">
+                    <div className="flex space-x-2">
+                      <label className="flex-1">
+                        <input 
+                          type="search" 
+                          placeholder="Tìm kiếm sản phẩm" 
+                          className="input w-full border-0 focus:outline-none focus:ring-0 focus:border-none"
+                          value={searchInput}
+                          onChange={handleSearchInputChange}
+                          autoFocus
+                        />
+                      </label>
+                      <button className="btn btn-square btn-sm sm:btn-md">
+                        <FaSearch className="text-sm sm:text-base"/>
+                      </button>
+                    </div>
+                    
+                    {/* Search Results */}
+                    {isSearching ? (
+                      <div className="mt-4 text-center text-gray-500">Đang tìm kiếm...</div>
+                    ) : searchResults.length > 0 ? (
+                      <div className="mt-4 max-h-[400px] overflow-y-auto">
+                        {searchResults.map((product) => (
+                          <div
+                            key={product._id}
+                            onClick={() => handleProductClick(product._id)}
+                            className="flex items-center gap-3 p-3 hover:bg-gray-50 cursor-pointer"
+                          >
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className="w-16 h-16 object-cover rounded"
+                            />
+                            <div>
+                              <h3 className="font-medium text-gray-900">{product.name}</h3>
+                              <p className="text-sm text-gray-500">{product.priceSale?.toLocaleString()}đ</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : searchInput && (
+                      <div className="mt-4 text-center text-gray-500">Không tìm thấy sản phẩm</div>
+                    )}
                   </div>
                 )}
               </div>
