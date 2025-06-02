@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaShoppingCart, FaStar, FaEye, FaShoppingBag, FaCartPlus, FaCheckCircle, FaHeart } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,6 +9,7 @@ const CardComponent = ({ _id, name, description, image, price, priceSale, varian
     const { addToCart } = useCart();
     const [isHovered, setIsHovered] = React.useState(false);
     const [isWishlisted, setIsWishlisted] = React.useState(false);
+    const navigate = useNavigate();
 
     const handleAddToCart = (e) => {
         e.preventDefault();
@@ -16,7 +17,7 @@ const CardComponent = ({ _id, name, description, image, price, priceSale, varian
         
         // Nếu sản phẩm có variants, chuyển hướng đến trang chi tiết
         if (variants && variants.length > 0) {
-            window.location.href = `/product/${_id}`;
+            navigate(`/product/${_id}`);
             return;
         }
 
