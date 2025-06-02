@@ -25,7 +25,7 @@ const Header = () => {
 
   const navItems = [
     { id: 1, name: "Trang chủ", href: "/" },
-    { id: 2, name: "Tay cầm FO4", href: "/f04" },
+    { id: 2, name: "Tay cầm FO4", href: "/danh-muc/682defb57addf524cc8b4c31" },
     { id: 3, name: "Tay Cầm PS5", href: "#" },
     { id: 4, name: "Tay Cầm Flydigi", href: "#" },
     { id: 5, name: "Tay Cầm EasySMX", href: "#" },

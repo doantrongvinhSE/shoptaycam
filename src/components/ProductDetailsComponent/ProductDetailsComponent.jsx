@@ -349,18 +349,59 @@ const ProductDetailPage = ({ product }) => {
             <hr className="border-gray-200" />
 
             {/* Features */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-sm text-red-600">
-                <FaTruck className="h-5 w-5" />
-                <span>Miễn phí vận chuyển cho đơn hàng trên 500.000đ</span>
+            <div className="grid grid-cols-1 gap-4">
+              <div className="relative overflow-hidden rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-100 hover:shadow-lg transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-red-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative flex items-center gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="relative">
+                      <div className="absolute inset-0 rounded-full bg-red-100 blur-sm" />
+                      <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-red-600 text-white shadow-sm">
+                        <FaTruck className="h-6 w-6" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-base font-semibold text-gray-900">Miễn phí vận chuyển</h3>
+                    <p className="mt-1 text-sm text-gray-600">Cho đơn hàng trên 500.000đ</p>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-3 text-sm text-blue-600">
-                <FaExchangeAlt className="h-5 w-5" />
-                <span>Chính sách đổi trả trong 30 ngày</span>
+
+              <div className="relative overflow-hidden rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-100 hover:shadow-lg transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative flex items-center gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="relative">
+                      <div className="absolute inset-0 rounded-full bg-blue-100 blur-sm" />
+                      <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-sm">
+                        <FaExchangeAlt className="h-6 w-6" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-base font-semibold text-gray-900">Đổi trả dễ dàng</h3>
+                    <p className="mt-1 text-sm text-gray-600">Chính sách đổi trả trong 30 ngày</p>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-3 text-sm text-green-600">
-                <FaShieldAlt className="h-5 w-5" />
-                <span>Bảo hành 2 năm</span>
+
+              <div className="relative overflow-hidden rounded-xl bg-white p-4 shadow-sm ring-1 ring-gray-100 hover:shadow-lg transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative flex items-center gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="relative">
+                      <div className="absolute inset-0 rounded-full bg-green-100 blur-sm" />
+                      <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-green-600 text-white shadow-sm">
+                        <FaShieldAlt className="h-6 w-6" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-base font-semibold text-gray-900">Bảo hành chính hãng</h3>
+                    <p className="mt-1 text-sm text-gray-600">Thời hạn bảo hành 2 năm</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

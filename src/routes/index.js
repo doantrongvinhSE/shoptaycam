@@ -5,6 +5,7 @@ import TypeProductPage from "../pages/client/TypeProductPage/TypeProductPage";
 import CartPage from "../pages/client/CartPage/CartPage";
 import CheckoutPage from "../pages/client/CheckoutPage/CheckoutPage";
 import ThankYouPage from "../pages/client/ThankYouPage/ThankYouPage";
+import CategoryPage from "../components/CategoryPage/CategoryPage";
 
 const routes = [
     {
@@ -20,6 +21,11 @@ const routes = [
     {
         path: '/danh-muc',
         page: TypeProductPage,
+        isShowHeader: true
+    },
+    {
+        path: '/danh-muc/:categoryId',
+        page: CategoryPage,
         isShowHeader: true
     },
     {
