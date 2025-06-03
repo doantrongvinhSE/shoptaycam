@@ -34,7 +34,7 @@ const ProductDetailPage = ({ product }) => {
   // Get variant image
   const getVariantImage = () => {
     if (!product.variants?.length) {
-      return product.image
+      return product.images[0]
     }
 
     // Tìm variant chính xác với màu
@@ -45,14 +45,14 @@ const ProductDetailPage = ({ product }) => {
     }
 
     // Nếu không tìm thấy ảnh nào, trả về ảnh mặc định
-    return product.image
+    return product.images[0]
   }
 
   // Get all images including main image and variant images
   const productImages = [
-    product.image,
+    ...(product.images || []),
     ...(product.variants || [])
-      .filter(variant => variant.image && variant.image !== product.image)
+      .filter(variant => variant.image && !product.images.includes(variant.image))
       .map(variant => variant.image)
   ].filter((image, index, self) => self.indexOf(image) === index) // Remove duplicates
 
@@ -70,7 +70,7 @@ const ProductDetailPage = ({ product }) => {
 
   // Calculate discount percentage
   const discountPercentage = selectedVariant ? 
-    Math.round(((selectedVariant.price - product.priceSale) / selectedVariant.price) * 100) : 0
+    Math.round(((selectedVariant.price - selectedVariant.salePrice) / selectedVariant.price) * 100) : 0
 
   const handleImageClick = (index) => {
     setSelectedImage(index)
@@ -84,11 +84,15 @@ const ProductDetailPage = ({ product }) => {
 
     const variantImage = getVariantImage()
 
-    addToCart(product, quantity, {
-      color: selectedColor || "",
-      price: selectedVariant?.price || product.price,
-      priceSale: selectedVariant?.priceSale || product.priceSale,
-      image: variantImage
+    addToCart({
+      _id: product._id,
+      name: product.name,
+      description: product.description,
+      image: variantImage,
+      price: selectedVariant?.price,
+      priceSale: selectedVariant?.salePrice,
+      variant: selectedVariant,
+      quantity
     })
 
     toast.success(
@@ -113,9 +117,9 @@ const ProductDetailPage = ({ product }) => {
           )}
           <div className="flex items-center gap-1.5">
             <span className="text-sm font-bold text-amber-600">
-              {(selectedVariant?.priceSale || product.priceSale)?.toLocaleString()}đ
+              {selectedVariant?.salePrice?.toLocaleString()}đ
             </span>
-            {selectedVariant?.price > (selectedVariant?.priceSale || product.priceSale) && (
+            {selectedVariant?.price > selectedVariant?.salePrice && (
               <span className="text-xs text-gray-400 line-through">
                 {selectedVariant?.price?.toLocaleString()}đ
               </span>
@@ -157,11 +161,15 @@ const ProductDetailPage = ({ product }) => {
     clearCart()
     
     // Thêm sản phẩm vào giỏ hàng
-    addToCart(product, quantity, {
-      color: selectedColor || "",
-      price: selectedVariant?.price || product.price,
-      priceSale: selectedVariant?.priceSale || product.priceSale,
-      image: variantImage
+    addToCart({
+      _id: product._id,
+      name: product.name,
+      description: product.description,
+      image: variantImage,
+      price: selectedVariant?.price,
+      priceSale: selectedVariant?.salePrice,
+      variant: selectedVariant,
+      quantity
     })
 
     // Chuyển hướng đến trang thanh toán
@@ -256,7 +264,7 @@ const ProductDetailPage = ({ product }) => {
 
               <div className="flex items-center gap-4">
                 <span className="text-3xl font-bold text-gray-900">
-                  {(selectedVariant?.priceSale || product.priceSale)?.toLocaleString()}đ
+                  {selectedVariant?.salePrice?.toLocaleString()}đ
                 </span>
                 <span className="text-xl text-gray-500 line-through">
                   {selectedVariant?.price?.toLocaleString()}đ

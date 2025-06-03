@@ -52,9 +52,7 @@ const Body = () => {
                                 _id={product._id}
                                 name={product.name}
                                 description={product.description}
-                                image={product.image}
-                                price={product.variants?.[0]?.price}
-                                priceSale={product.variants?.[0]?.priceSale || product.priceSale}
+                                images={product.images}
                                 variants={product.variants}
                             />
                         ))}
@@ -79,10 +77,8 @@ const Body = () => {
                                 key={product._id}
                                 _id={product._id}
                                 name={product.name}
-                                image={product.image}
+                                images={product.images}
                                 description={product.description}
-                                price={product.variants?.[0]?.price}
-                                priceSale={product.variants?.[0]?.priceSale || product.priceSale}
                                 variants={product.variants}
                             />
                         ))}
@@ -99,10 +95,8 @@ const Body = () => {
                                 key={product._id}
                                 _id={product._id}
                                 name={product.name}
-                                image={product.image}
+                                images={product.images}
                                 description={product.description}
-                                price={product.variants?.[0]?.price}
-                                priceSale={product.variants?.[0]?.priceSale || product.priceSale}
                                 variants={product.variants}
                             />
                         ))}

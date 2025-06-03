@@ -5,11 +5,17 @@ import { useCart } from '../../context/CartContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const CardComponent = ({ _id, name, description, image, price, priceSale, variants }) => {
+const CardComponent = ({ _id, name, description, images, variants }) => {
     const { addToCart } = useCart();
     const [isHovered, setIsHovered] = React.useState(false);
     const [isWishlisted, setIsWishlisted] = React.useState(false);
     const navigate = useNavigate();
+
+    // Lấy variant đầu tiên làm mặc định
+    const defaultVariant = variants?.[0];
+    const price = defaultVariant?.price;
+    const priceSale = defaultVariant?.salePrice;
+    const image = defaultVariant?.image || images?.[0];
 
     const handleAddToCart = (e) => {
         e.preventDefault();
@@ -28,7 +34,8 @@ const CardComponent = ({ _id, name, description, image, price, priceSale, varian
             description,
             image,
             price,
-            priceSale
+            priceSale,
+            variant: defaultVariant
         });
 
         toast.success(
