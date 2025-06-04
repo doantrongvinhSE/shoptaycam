@@ -22,7 +22,7 @@ const CartDropdown = () => {
       <div className="absolute -top-2 right-3 w-4 h-4 bg-white transform rotate-45 shadow-[-2px_-2px_5px_rgba(0,0,0,0.06)]"></div>
       <div className="max-h-96 overflow-y-auto">
         {cartItems.map((item) => (
-          <div key={`${item._id}-${item.selectedVariant?.color}-${item.selectedVariant?.size}`} className="flex items-center gap-4 py-3 border-b border-gray-100">
+          <div key={`${item._id}-${item.selectedVariant?.color || 'default'}-${item.selectedVariant?.size || 'default'}`} className="flex items-center gap-4 py-3 border-b border-gray-100">
             <Link to={`/product/${item._id}`}>
               <img
                 src={item.selectedVariant?.image || item.image}

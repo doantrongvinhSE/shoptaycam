@@ -33,7 +33,7 @@ const CartPage = () => {
           <div className="bg-white rounded-lg shadow-sm">
             {cartItems.map((item) => (
               <div 
-                key={`${item._id}-${item.selectedVariant?.color}`} 
+                key={`${item._id}-${item.selectedVariant?.color || 'default'}-${item.selectedVariant?.size || 'default'}`} 
                 className="flex items-center gap-4 p-4 border-b border-gray-100 last:border-0"
               >
                 <Link to={`/product/${item._id}`}>

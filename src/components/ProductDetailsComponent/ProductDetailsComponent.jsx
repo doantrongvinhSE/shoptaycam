@@ -70,7 +70,7 @@ const ProductDetailPage = ({ product }) => {
 
   // Calculate discount percentage
   const discountPercentage = selectedVariant ? 
-    Math.round(((selectedVariant.price - selectedVariant.salePrice) / selectedVariant.price) * 100) : 0
+    (selectedVariant.salePrice > 0 ? Math.round(((selectedVariant.price - selectedVariant.salePrice) / selectedVariant.price) * 100) : 0) : 0
 
   const handleImageClick = (index) => {
     setSelectedImage(index)
@@ -83,17 +83,26 @@ const ProductDetailPage = ({ product }) => {
     }
 
     const variantImage = getVariantImage()
+    const finalPrice = selectedVariant?.salePrice > 0 ? selectedVariant.salePrice : selectedVariant?.price
 
-    addToCart({
-      _id: product._id,
-      name: product.name,
-      description: product.description,
-      image: variantImage,
-      price: selectedVariant?.price,
-      priceSale: selectedVariant?.salePrice,
-      variant: selectedVariant,
-      quantity
-    })
+    addToCart(
+      {
+        _id: product._id,
+        name: product.name,
+        description: product.description,
+        image: variantImage,
+        price: selectedVariant?.price,
+        priceSale: selectedVariant?.salePrice
+      },
+      quantity,
+      selectedVariant ? {
+        color: selectedColor,
+        size: selectedVariant.size,
+        image: variantImage,
+        price: selectedVariant.price,
+        salePrice: selectedVariant.salePrice
+      } : null
+    )
 
     toast.success(
       <div className="flex items-start gap-4 p-2">
@@ -117,9 +126,9 @@ const ProductDetailPage = ({ product }) => {
           )}
           <div className="flex items-center gap-1.5">
             <span className="text-sm font-bold text-amber-600">
-              {selectedVariant?.salePrice?.toLocaleString()}đ
+              {finalPrice?.toLocaleString()}đ
             </span>
-            {selectedVariant?.price > selectedVariant?.salePrice && (
+            {selectedVariant?.salePrice > 0 && selectedVariant?.price > selectedVariant?.salePrice && (
               <span className="text-xs text-gray-400 line-through">
                 {selectedVariant?.price?.toLocaleString()}đ
               </span>
@@ -161,16 +170,24 @@ const ProductDetailPage = ({ product }) => {
     clearCart()
     
     // Thêm sản phẩm vào giỏ hàng
-    addToCart({
-      _id: product._id,
-      name: product.name,
-      description: product.description,
-      image: variantImage,
-      price: selectedVariant?.price,
-      priceSale: selectedVariant?.salePrice,
-      variant: selectedVariant,
-      quantity
-    })
+    addToCart(
+      {
+        _id: product._id,
+        name: product.name,
+        description: product.description,
+        image: variantImage,
+        price: selectedVariant?.price,
+        priceSale: selectedVariant?.salePrice
+      },
+      quantity,
+      selectedVariant ? {
+        color: selectedColor,
+        size: selectedVariant.size,
+        image: variantImage,
+        price: selectedVariant.price,
+        salePrice: selectedVariant.salePrice
+      } : null
+    )
 
     // Chuyển hướng đến trang thanh toán
     navigate('/checkout')
@@ -264,14 +281,18 @@ const ProductDetailPage = ({ product }) => {
 
               <div className="flex items-center gap-4">
                 <span className="text-3xl font-bold text-gray-900">
-                  {selectedVariant?.salePrice?.toLocaleString()}đ
+                  {(selectedVariant?.salePrice || selectedVariant?.price)?.toLocaleString()}đ
                 </span>
-                <span className="text-xl text-gray-500 line-through">
-                  {selectedVariant?.price?.toLocaleString()}đ
-                </span>
-                <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                  Giảm {discountPercentage}%
-                </span>
+                {selectedVariant?.salePrice > 0 && selectedVariant?.price > selectedVariant?.salePrice && (
+                  <>
+                    <span className="text-xl text-gray-500 line-through">
+                      {selectedVariant?.price?.toLocaleString()}đ
+                    </span>
+                    <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                      Giảm {discountPercentage}%
+                    </span>
+                  </>
+                )}
               </div>
 
               <p className="text-gray-600 leading-relaxed">

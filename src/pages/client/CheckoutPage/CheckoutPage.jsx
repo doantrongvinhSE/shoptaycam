@@ -370,7 +370,7 @@ const CheckoutPage = () => {
             
             <div className="space-y-4 mb-6">
               {cartItems.map((item) => (
-                <div key={`${item._id}-${item.selectedVariant?.color}-${item.selectedVariant?.size}`} className="flex items-center gap-4">
+                <div key={`${item._id}-${item.selectedVariant?.color || 'default'}-${item.selectedVariant?.size || 'default'}`} className="flex items-center gap-4">
                   <img
                     src={item.selectedVariant?.image || item.image}
                     alt={item.name}

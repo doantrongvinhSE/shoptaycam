@@ -154,7 +154,7 @@ const CategoryPage = () => {
                   _id={product._id}
                   name={product.name}
                   description={product.description}
-                  image={product.image}
+                  images={product.images}
                   price={product.variants?.[0]?.price || product.priceSale}
                   priceSale={product.priceSale}
                   variants={product.variants}

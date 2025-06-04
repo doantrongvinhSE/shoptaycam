@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -98,7 +98,13 @@ const Header = () => {
     try {
       setIsSearching(true);
       const response = await axios.get(`https://taycambe.onrender.com/api/v1/products/search?keyword=${encodeURIComponent(keyword)}`);
-      setSearchResults(response.data);
+      const transformedResults = response.data.map(product => ({
+        _id: product._id,
+        name: product.name,
+        image: product.images[0],
+        priceSale: product.variants[0]?.salePrice || product.variants[0]?.price
+      }));
+      setSearchResults(transformedResults);
     } catch (error) {
       console.error('Lỗi khi tìm kiếm:', error);
     } finally {

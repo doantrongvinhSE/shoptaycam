@@ -20,55 +20,70 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (product, quantity = 1, selectedVariant = null) => {
     setCartItems(prevItems => {
-      // Tìm sản phẩm có cùng ID và variant
-      const existingItem = prevItems.find(item => 
-        item._id === product._id && 
-        item.selectedVariant?.color === selectedVariant?.color &&
-        item.selectedVariant?.size === selectedVariant?.size
-      );
+      // Tạo một key duy nhất cho sản phẩm dựa trên ID và variant
+      const itemKey = `${product._id}-${selectedVariant?.color || 'default'}-${selectedVariant?.size || 'default'}`;
       
-      if (existingItem) {
-        return prevItems.map(item =>
-          item._id === product._id && 
-          item.selectedVariant?.color === selectedVariant?.color &&
-          item.selectedVariant?.size === selectedVariant?.size
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
+      // Tìm sản phẩm có cùng key
+      const existingItemIndex = prevItems.findIndex(item => {
+        const currentItemKey = `${item._id}-${item.selectedVariant?.color || 'default'}-${item.selectedVariant?.size || 'default'}`;
+        return currentItemKey === itemKey;
+      });
+      
+      if (existingItemIndex !== -1) {
+        // Nếu sản phẩm đã tồn tại, cập nhật số lượng
+        const newItems = [...prevItems];
+        newItems[existingItemIndex] = {
+          ...newItems[existingItemIndex],
+          quantity: newItems[existingItemIndex].quantity + quantity
+        };
+        return newItems;
       }
       
-      return [...prevItems, { 
-        ...product, 
-        quantity,
-        selectedVariant,
+      // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng
+      const newItem = {
+        _id: product._id,
+        name: product.name,
+        description: product.description,
+        image: selectedVariant?.image || product.image,
         price: selectedVariant?.price || product.price,
-        priceSale: selectedVariant?.priceSale || product.priceSale
-      }];
+        priceSale: selectedVariant?.salePrice || selectedVariant?.price || product.priceSale || product.price,
+        quantity,
+        selectedVariant: selectedVariant ? {
+          color: selectedVariant.color,
+          size: selectedVariant.size,
+          image: selectedVariant.image,
+          price: selectedVariant.price,
+          salePrice: selectedVariant.salePrice || selectedVariant.price
+        } : null
+      };
+      
+      return [...prevItems, newItem];
     });
   };
 
   const removeFromCart = (productId, selectedVariant = null) => {
-    setCartItems(prevItems => 
-      prevItems.filter(item => 
-        !(item._id === productId && 
-          item.selectedVariant?.color === selectedVariant?.color &&
-          item.selectedVariant?.size === selectedVariant?.size)
-      )
-    );
+    setCartItems(prevItems => {
+      const itemKey = `${productId}-${selectedVariant?.color || 'default'}-${selectedVariant?.size || 'default'}`;
+      return prevItems.filter(item => {
+        const currentItemKey = `${item._id}-${item.selectedVariant?.color || 'default'}-${item.selectedVariant?.size || 'default'}`;
+        return currentItemKey !== itemKey;
+      });
+    });
   };
 
   const updateQuantity = (productId, quantity, selectedVariant = null) => {
     if (quantity < 1) return;
     
-    setCartItems(prevItems =>
-      prevItems.map(item =>
-        item._id === productId && 
-        item.selectedVariant?.color === selectedVariant?.color &&
-        item.selectedVariant?.size === selectedVariant?.size
-          ? { ...item, quantity }
-          : item
-      )
-    );
+    setCartItems(prevItems => {
+      const itemKey = `${productId}-${selectedVariant?.color || 'default'}-${selectedVariant?.size || 'default'}`;
+      return prevItems.map(item => {
+        const currentItemKey = `${item._id}-${item.selectedVariant?.color || 'default'}-${item.selectedVariant?.size || 'default'}`;
+        if (currentItemKey === itemKey) {
+          return { ...item, quantity };
+        }
+        return item;
+      });
+    });
   };
 
   const clearCart = () => {

@@ -14,8 +14,8 @@ const CardComponent = ({ _id, name, description, images, variants }) => {
     // Lấy variant đầu tiên làm mặc định
     const defaultVariant = variants?.[0];
     const price = defaultVariant?.price;
-    const priceSale = defaultVariant?.salePrice;
-    const image = defaultVariant?.image || images?.[0];
+    const priceSale = defaultVariant?.salePrice || price;
+    const image = images?.[0];
 
     const handleAddToCart = (e) => {
         e.preventDefault();
@@ -55,7 +55,7 @@ const CardComponent = ({ _id, name, description, images, variants }) => {
                     <p className="text-sm text-gray-800 mb-1 line-clamp-1">{name}</p>
                     <div className="flex items-center gap-2">
                         <span className="text-sm font-bold text-amber-600">{priceSale?.toLocaleString()}đ</span>
-                        {price > priceSale && (
+                        {price > priceSale && priceSale > 0 && (
                             <span className="text-xs text-gray-400 line-through">{price?.toLocaleString()}đ</span>
                         )}
                     </div>
@@ -117,7 +117,7 @@ const CardComponent = ({ _id, name, description, images, variants }) => {
                         </button>
                     </div>
                     {/* Discount Badge */}
-                    {price > priceSale && (
+                    {price > priceSale && priceSale > 0 && (
                         <div className="absolute top-3 left-3">
                             <span className="bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-full">
                                 -{Math.round(((price - priceSale) / price) * 100)}%
@@ -141,7 +141,7 @@ const CardComponent = ({ _id, name, description, images, variants }) => {
                     <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2">
                             <span className="text-sm font-bold text-amber-600">{priceSale?.toLocaleString()}đ</span>
-                            {price > priceSale && (
+                            {price > priceSale && priceSale > 0 && (
                                 <span className="text-xs text-gray-400 line-through">{price?.toLocaleString()}đ</span>
                             )}
                         </div>
