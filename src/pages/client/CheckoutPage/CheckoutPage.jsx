@@ -3,6 +3,7 @@ import { useCart } from '../../../context/CartContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiShoppingCart } from 'react-icons/fi';
 import useAddress from '../../../hooks/useAddress';
+import { API_ENDPOINTS } from '../../../config/api';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -122,21 +123,66 @@ const CheckoutPage = () => {
     setIsSubmitting(true);
 
     try {
-      // Xử lý đặt hàng ở đây
-      console.log('Order data:', {
-        items: cartItems,
-        total: getCartTotal(),
-        customerInfo: formData
+      // Format data according to API requirements
+      console.log('Debug provinces:', provinces);
+      console.log('Debug districts:', districts);
+      console.log('Debug wards:', wards);
+      console.log('Form data:', formData);
+
+      const selectedProvince = provinces.find(p => p.code === parseInt(formData.city));
+      const selectedDistrict = districts.find(d => d.code === parseInt(formData.district));
+      const selectedWard = wards.find(w => w.code === parseInt(formData.ward));
+
+      console.log('Selected locations:', {
+        province: selectedProvince,
+        district: selectedDistrict,
+        ward: selectedWard
       });
+
+      const orderData = {
+        customerInfo: {
+          fullName: formData.fullName,
+          email: formData.email,
+          phone: formData.phone
+        },
+        items: cartItems.map(item => ({
+          product: item._id,
+          quantity: item.quantity,
+          price: item.priceSale || item.price
+        })),
+        shippingAddress: {
+          address: formData.address,
+          city: selectedProvince?.name || '',
+          district: selectedDistrict?.name || '',
+          ward: selectedWard?.name || ''
+        },
+        paymentMethod: formData.paymentMethod === 'cod' ? 'COD' : 'BANK_TRANSFER'
+      };
+
+      console.log('Sending order data:', orderData); // Debug log
+
+      const response = await fetch(API_ENDPOINTS.ORDERS, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.message || 'Failed to place order');
+      }
       
-      // Sau khi đặt hàng thành công
+      // Clear cart and redirect on success
       clearCart();
       navigate('/thank-you');
     } catch (error) {
       console.error('Error placing order:', error);
       setErrors(prev => ({
         ...prev,
-        submit: 'Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.'
+        submit: error.message || 'Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.'
       }));
     } finally {
       setIsSubmitting(false);
@@ -335,18 +381,43 @@ const CheckoutPage = () => {
                   />
                   <span className="ml-2">Chuyển khoản ngân hàng</span>
                 </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="momo"
-                    checked={formData.paymentMethod === 'momo'}
-                    onChange={handleInputChange}
-                    className="h-4 w-4 text-amber-600 focus:ring-amber-500"
-                  />
-                  <span className="ml-2">Ví MoMo</span>
-                </label>
               </div>
+
+              {formData.paymentMethod === 'banking' && (
+                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                  <h3 className="text-md font-medium text-gray-900 mb-3">Thông tin chuyển khoản</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Ngân hàng:</span>
+                      <span className="font-medium">Vietcombank</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Số tài khoản:</span>
+                      <span className="font-medium">1234567890</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Chủ tài khoản:</span>
+                      <span className="font-medium">CÔNG TY TNHH SHOP TAY CẦM</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Chi nhánh:</span>
+                      <span className="font-medium">Hồ Chí Minh</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Nội dung chuyển khoản:</span>
+                      <span className="font-medium">SHOPTAYCAM [Số điện thoại của bạn]</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 text-sm text-gray-500">
+                    <p className="font-medium text-amber-600">Lưu ý:</p>
+                    <ul className="list-disc list-inside space-y-1 mt-2">
+                      <li>Vui lòng chuyển khoản đúng số tiền và nội dung</li>
+                      <li>Đơn hàng sẽ được xử lý sau khi chúng tôi xác nhận được chuyển khoản</li>
+                      <li>Nếu cần hỗ trợ, vui lòng liên hệ hotline: 0123456789</li>
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6">

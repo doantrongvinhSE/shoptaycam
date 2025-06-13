@@ -6,6 +6,7 @@ import CartPage from "../pages/client/CartPage/CartPage";
 import CheckoutPage from "../pages/client/CheckoutPage/CheckoutPage";
 import ThankYouPage from "../pages/client/ThankYouPage/ThankYouPage";
 import CategoryPage from "../components/CategoryPage/CategoryPage";
+import OrderLookupPage from "../pages/client/OrderLookupPage/OrderLookupPage";
 
 const routes = [
     {
@@ -41,6 +42,11 @@ const routes = [
     {
         path: '/thank-you',
         page: ThankYouPage,
+        isShowHeader: true
+    },
+    {
+        path: '/tra-cuu-don-hang',
+        page: OrderLookupPage,
         isShowHeader: true
     },
     {

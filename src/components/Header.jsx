@@ -8,6 +8,7 @@ import { useCart } from "../context/CartContext";
 import CartDropdown from "./CartDropdown/CartDropdown";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_ENDPOINTS } from '../config/api';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,29 +18,33 @@ const Header = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [categories, setCategories] = useState([]);
   const cartRef = useRef(null);
   const searchRef = useRef(null);
   const searchTimeoutRef = useRef(null);
   const { getCartCount } = useCart();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(API_ENDPOINTS.CATEGORIES);
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   const navItems = [
     { id: 1, name: "Trang chủ", href: "/" },
-    { id: 2, name: "Tay cầm FO4", href: "/danh-muc/682defb57addf524cc8b4c31" },
-    { id: 3, name: "Tay Cầm PS5", href: "#" },
-    { id: 4, name: "Tay Cầm Flydigi", href: "#" },
-    { id: 5, name: "Tay Cầm EasySMX", href: "#" },
-    { id: 6, name: "Tay Cầm BigBig Won", href: "#" },
-    { id: 7, name: "Tay Cầm PS4", href: "#" },
-    { id: 8, name: "Tay Cầm Xbox", href: "#" },
-    { id: 9, name: "Tay Cầm Gamesir", href: "#" },
-    { id: 10, name: "Tay Cầm P4 Plus", href: "#" },
-    { id: 11, name: "Tay Cầm A102L", href: "#" },
-    { id: 12, name: "Tay Cầm Z03DP", href: "#" },
-    { id: 13, name: "Tay Cầm 8Bitdo", href: "#" },
-    { id: 14, name: "Tay Cầm Mobapad", href: "#" },
-    { id: 15, name: "Tay Cầm PXN", href: "#" },
-    { id: 16, name: "Tay Cầm Nintendo Switch", href: "#" },
+    ...categories.map((category, index) => ({
+      id: index + 2,
+      name: category.name,
+      href: `/danh-muc/${category._id}`
+    })),
+    { id: categories.length + 2, name: "Tra cứu đơn hàng", href: "/tra-cuu-don-hang" }
   ];
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -97,7 +102,7 @@ const Header = () => {
 
     try {
       setIsSearching(true);
-      const response = await axios.get(`https://taycambe.onrender.com/api/v1/products/search?keyword=${encodeURIComponent(keyword)}`);
+      const response = await axios.get(`${API_ENDPOINTS.PRODUCTS}/search?keyword=${encodeURIComponent(keyword)}`);
       const transformedResults = response.data.map(product => ({
         _id: product._id,
         name: product.name,

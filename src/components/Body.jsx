@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import CardComponent from './CardComponent/CardComponent';
+import { API_ENDPOINTS } from '../config/api';
 
 const Body = () => {
     const [products, setProducts] = useState([]);
+    const [contents, setContents] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get('https://taycambe.onrender.com/api/v1/products');
-                setProducts(response.data);
-                console.log(response.data);
+                const [productsResponse, contentsResponse] = await Promise.all([
+                    axios.get(API_ENDPOINTS.PRODUCTS),
+                    axios.get(API_ENDPOINTS.CONTENTS)
+                ]);
+                setProducts(productsResponse.data);
+                setContents(contentsResponse.data.data);
             } catch (error) {
-                console.error('Lỗi khi tải sản phẩm:', error);
+                console.error('Lỗi khi tải dữ liệu:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchProducts();
+        fetchData();
     }, []);
 
     const LoadingSkeleton = () => (
@@ -38,70 +43,38 @@ const Body = () => {
         </div>
     );
 
+    const renderProductSection = (content) => {
+        const filteredProducts = products.filter(product => 
+            content.idsProduct.includes(product._id)
+        );
+
+        return (
+            <div key={content._id}>
+                <p className='text-xl font-bold mb-6 mt-8'>{content.title}</p>
+                {loading ? (
+                    <LoadingSkeleton />
+                ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
+                        {filteredProducts.map(product => (
+                            <CardComponent
+                                key={product._id}
+                                _id={product._id}
+                                name={product.name}
+                                images={product.images}
+                                description={product.description}
+                                variants={product.variants}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+        );
+    };
+
     return (
         <div>
             <div className='max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8'>
-                <p className='text-xl font-bold mb-6'>TOP TAY CẦM FO4, FIFA, PES BÁN CHẠY NHẤT HÔM NAY</p>
-                {loading ? (
-                    <LoadingSkeleton />
-                ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-                        {products.map(product => (
-                            <CardComponent
-                                key={product._id}
-                                _id={product._id}
-                                name={product.name}
-                                description={product.description}
-                                images={product.images}
-                                variants={product.variants}
-                            />
-                        ))}
-                    </div>
-                )}
-                <div className="flex justify-center mt-12">
-                    <button className="inline-flex items-center gap-2 px-6 py-2.5 border-2 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-white transition-all duration-300 text-sm font-medium tracking-wide">
-                        Xem thêm
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                </div>
-
-                <p className='text-xl font-bold mb-6 mt-8'>TAY CẦM SONY DUALSENSE 5 PS5 BÁN CHẠY</p>
-                {loading ? (
-                    <LoadingSkeleton />
-                ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-                        {products.map(product => (
-                            <CardComponent
-                                key={product._id}
-                                _id={product._id}
-                                name={product.name}
-                                images={product.images}
-                                description={product.description}
-                                variants={product.variants}
-                            />
-                        ))}
-                    </div>
-                )}
-
-                <p className='text-xl font-bold mb-6 mt-8'>TOP TAY CẦM CHƠI FLYDIGI BÁN CHẠY NHẤT</p>
-                {loading ? (
-                    <LoadingSkeleton />
-                ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-                        {products.map(product => (
-                            <CardComponent
-                                key={product._id}
-                                _id={product._id}
-                                name={product.name}
-                                images={product.images}
-                                description={product.description}
-                                variants={product.variants}
-                            />
-                        ))}
-                    </div>
-                )}
+                {contents.map(content => renderProductSection(content))}
             </div>
         </div>
     );

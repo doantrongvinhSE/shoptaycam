@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../../config/api';
 
 export const fetchProductsByCategory = createAsyncThunk(
   'products/fetchByCategory',
   async (categoryId) => {
-    const response = await axios.get(`https://taycambe.onrender.com/api/v1/products/category/${categoryId}`);
+    const response = await axios.get(`${API_ENDPOINTS.PRODUCTS}/category/${categoryId}`);
     return response.data;
   }
 );

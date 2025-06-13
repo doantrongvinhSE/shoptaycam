@@ -1,43 +1,61 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { FaFacebook, FaTiktok, FaYoutube, FaCcVisa, FaCcPaypal, FaCcStripe, FaCcMastercard, FaApplePay } from "react-icons/fa";
 import { SiZalo } from "react-icons/si";
-
-
+import { API_ENDPOINTS } from '../config/api';
 
 const Footer = () => {
+    const [config, setConfig] = useState({
+        socialLinks: {},
+        phone: '',
+        email: '',
+        address: ''
+    });
+
+    useEffect(() => {
+        const fetchConfig = async () => {
+            try {
+                const response = await fetch(API_ENDPOINTS.CONFIG);
+                const data = await response.json();
+                setConfig(data);
+            } catch (error) {
+                console.error('Error fetching config:', error);
+            }
+        };
+
+        fetchConfig();
+    }, []);
+
     return (
         <div className=''>
             <footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
                 <nav>
-                    <h6 className="footer-title">Thông tin liên hệ
-                    </h6>
-                    <p>Địa Chỉ : số 18 ngõ 357 Tam Trinh, P. Hoàng Văn Thụ, Hoàng Mai, Hà Nội</p>
-                    <p>Số điện thoại : 0988.965.716 - 0988.4999.30 - 0988.4999.60</p>
-                    <p>Email : shoptaycam@gmail.com</p>
+                    <h6 className="footer-title">Thông tin liên hệ</h6>
+                    <p>Địa Chỉ : {config.address}</p>
+                    <p>Số điện thoại : {config.phone}</p>
+                    <p>Email : {config.email}</p>
                     <p>Website : www.shoptaycam.com</p>
                     <ul className="flex gap-3">
                         <li>
-                            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-2xl text-blue-600 transition-colors">
+                            <a href={config.socialLinks?.facebook} target="_blank" rel="noopener noreferrer" className="text-2xl text-blue-600 transition-colors">
                                 <FaFacebook />
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-2xl text-blue-600 transition-colors">
+                            <a href={config.socialLinks?.zalo} target="_blank" rel="noopener noreferrer" className="text-2xl text-blue-600 transition-colors">
                                 <SiZalo />
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-xl text-black-600 transition-colors">
+                            <a href={config.socialLinks?.tiktok} target="_blank" rel="noopener noreferrer" className="text-xl text-black-600 transition-colors">
                                 <FaTiktok />
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-2xl text-red-600 transition-colors">
+                            <a href={config.socialLinks?.youtube} target="_blank" rel="noopener noreferrer" className="text-2xl text-red-600 transition-colors">
                                 <FaYoutube />
                             </a>
                         </li>
                     </ul>
-
                 </nav>
                 <nav>
                     <h6 className="footer-title">Quy định & hướng dẫn</h6>
