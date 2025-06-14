@@ -57,13 +57,41 @@ const ProductDetailPage = ({ product }) => {
   ].filter((image, index, self) => self.indexOf(image) === index) // Remove duplicates
 
   // Get colors from variants
-  const colors = (product.variants || []).map(variant => ({
-    name: variant.color,
-    value: variant.color,
-    class: variant.color.toLowerCase() === "trắng" ? "bg-white border border-gray-300" : 
-           variant.color.toLowerCase() === "đen" ? "bg-black" : 
-           "bg-gray-500"
-  }))
+  const colors = (product.variants || []).map(variant => {
+    const colorName = variant.color.toLowerCase();
+    let colorClass = "bg-gray-500"; // Màu mặc định
+
+    // Xử lý các màu cơ bản
+    if (colorName.includes("đen")) {
+      colorClass = "bg-black";
+    } else if (colorName.includes("trắng")) {
+      colorClass = "bg-white border border-gray-300";
+    } else if (colorName.includes("xanh dương") || colorName.includes("xanh biển")) {
+      colorClass = "bg-blue-500";
+    } else if (colorName.includes("xanh lá") || colorName.includes("xanh lục")) {
+      colorClass = "bg-green-500";
+    } else if (colorName.includes("đỏ")) {
+      colorClass = "bg-red-500";
+    } else if (colorName.includes("vàng")) {
+      colorClass = "bg-yellow-400";
+    } else if (colorName.includes("hồng")) {
+      colorClass = "bg-pink-500";
+    } else if (colorName.includes("tím")) {
+      colorClass = "bg-purple-500";
+    } else if (colorName.includes("cam")) {
+      colorClass = "bg-orange-500";
+    } else if (colorName.includes("nâu")) {
+      colorClass = "bg-amber-700";
+    } else if (colorName.includes("xám")) {
+      colorClass = "bg-gray-400";
+    }
+
+    return {
+      name: variant.color,
+      value: variant.color,
+      class: colorClass
+    };
+  })
 
   const incrementQuantity = () => setQuantity((prev) => prev + 1)
   const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1))
@@ -272,7 +300,7 @@ const ProductDetailPage = ({ product }) => {
                   {[...Array(5)].map((_, i) => (
                     <FaStar
                       key={i}
-                      className={`h-5 w-5 ${i < 4 ? "text-yellow-400" : "text-gray-300"}`}
+                      className={`h-5 w-5 ${i < 5 ? "text-yellow-400" : "text-gray-300"}`}
                     />
                   ))}
                 </div>
