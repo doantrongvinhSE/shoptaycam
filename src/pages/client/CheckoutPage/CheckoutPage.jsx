@@ -123,21 +123,9 @@ const CheckoutPage = () => {
     setIsSubmitting(true);
 
     try {
-      // Format data according to API requirements
-      console.log('Debug provinces:', provinces);
-      console.log('Debug districts:', districts);
-      console.log('Debug wards:', wards);
-      console.log('Form data:', formData);
-
       const selectedProvince = provinces.find(p => p.code === parseInt(formData.city));
       const selectedDistrict = districts.find(d => d.code === parseInt(formData.district));
       const selectedWard = wards.find(w => w.code === parseInt(formData.ward));
-
-      console.log('Selected locations:', {
-        province: selectedProvince,
-        district: selectedDistrict,
-        ward: selectedWard
-      });
 
       const orderData = {
         customerInfo: {
@@ -146,20 +134,33 @@ const CheckoutPage = () => {
           phone: formData.phone
         },
         items: cartItems.map(item => ({
-          product: item._id,
+          productInfo: {
+            name: item.name,
+            price: item.priceSale || item.price,
+            image: item.selectedVariant?.image || item.image,
+            sku: item.sku || `${item._id}-${item.selectedVariant?.color || 'default'}-${item.selectedVariant?.size || 'default'}`
+          },
           quantity: item.quantity,
-          price: item.priceSale || item.price
+          price: (item.priceSale || item.price) * item.quantity
         })),
+        totalAmount: getCartTotal(),
         shippingAddress: {
           address: formData.address,
           city: selectedProvince?.name || '',
           district: selectedDistrict?.name || '',
           ward: selectedWard?.name || ''
         },
-        paymentMethod: formData.paymentMethod === 'cod' ? 'COD' : 'BANK_TRANSFER'
+        paymentMethod: formData.paymentMethod === 'cod' ? 'COD' : 'BANK_TRANSFER',
+        paymentStatus: 'PENDING',
+        orderStatus: 'PENDING',
+        bankTransferInfo: formData.paymentMethod === 'banking' ? {
+          bankName: 'Vietcombank',
+          accountNumber: '1234567890',
+          accountHolder: 'CÔNG TY TNHH SHOP TAY CẦM',
+          transferAmount: getCartTotal(),
+          transferNote: `SHOPTAYCAM ${formData.phone}`
+        } : undefined
       };
-
-      console.log('Sending order data:', orderData); // Debug log
 
       const response = await fetch(API_ENDPOINTS.ORDERS, {
         method: 'POST',

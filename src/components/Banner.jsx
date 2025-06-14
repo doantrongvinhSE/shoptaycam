@@ -10,20 +10,34 @@ const Banner = () => {
     const [config, setConfig] = useState({
         banners: []
     });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchConfig = async () => {
             try {
+                setLoading(true);
                 const response = await fetch(API_ENDPOINTS.CONFIG);
                 const data = await response.json();
                 setConfig(data);
             } catch (error) {
                 console.error('Error fetching config:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchConfig();
     }, []);
+
+    const LoadingSkeleton = () => (
+        <div className="min-h-[400px] md:min-h-[650px]">
+            <div className="skeleton w-full h-full"></div>
+        </div>
+    );
+
+    if (loading) {
+        return <LoadingSkeleton />;
+    }
 
     return (
         <>

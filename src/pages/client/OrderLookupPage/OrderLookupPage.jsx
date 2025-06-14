@@ -10,7 +10,7 @@ const OrderStatus = ({ status }) => {
         switch(status?.toLowerCase()) {
             case 'pending':
                 return 'bg-[#e3d06f] bg-opacity-20 text-[#8b7e43]';
-            case 'confirmed':
+            case 'processing':
                 return 'bg-blue-100 text-blue-800';
             case 'shipping':
                 return 'bg-purple-100 text-purple-800';
@@ -27,8 +27,8 @@ const OrderStatus = ({ status }) => {
         switch(status) {
             case 'PENDING':
                 return 'Chờ xác nhận';
-            case 'CONFIRMED':
-                return 'Đã xác nhận';
+            case 'PROCESSING':
+                return 'Đang xử lý';
             case 'SHIPPING':
                 return 'Đang giao';
             case 'DELIVERED':
@@ -184,7 +184,7 @@ const OrderLookupPage = () => {
                                             <ul className="list-disc list-inside text-gray-600">
                                                 {order.items.map(item => (
                                                     <li key={item._id} className="text-sm">
-                                                        {item.product.name} - {item.quantity} x {item.price?.toLocaleString()}đ
+                                                        {item.productInfo.name} - {item.quantity} x {item.price?.toLocaleString()}đ
                                                     </li>
                                                 ))}
                                             </ul>

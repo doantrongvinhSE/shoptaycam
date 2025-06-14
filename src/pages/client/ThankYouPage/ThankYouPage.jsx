@@ -21,7 +21,7 @@ const ThankYouPage = () => {
             Tiếp tục mua sắm
           </Link>
           <Link
-            to="/orders"
+            to="/tra-cuu-don-hang"
             className="w-full sm:w-auto inline-block bg-white text-amber-500 border border-amber-500 px-6 py-3 rounded-md hover:bg-amber-50 transition-colors text-center"
           >
             Xem đơn hàng của tôi

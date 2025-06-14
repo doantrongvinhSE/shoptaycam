@@ -29,14 +29,23 @@ const Body = () => {
     }, []);
 
     const LoadingSkeleton = () => (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-            {[...Array(6)].map((_, index) => (
-                <div key={index} className="card bg-base-100 shadow-xl">
-                    <div className="skeleton h-48 w-full"></div>
-                    <div className="card-body p-4">
-                        <div className="skeleton h-4 w-3/4"></div>
-                        <div className="skeleton h-4 w-1/2 mt-2"></div>
-                        <div className="skeleton h-8 w-1/3 mt-2"></div>
+        <div className="space-y-8">
+            {[...Array(2)].map((_, sectionIndex) => (
+                <div key={sectionIndex}>
+                    <div className="h-6 w-1/3 skeleton mb-4"></div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                        {[...Array(6)].map((_, index) => (
+                            <div key={index} className="card bg-base-100 shadow-sm">
+                                <div className="relative aspect-square">
+                                    <div className="skeleton w-full h-full"></div>
+                                </div>
+                                <div className="card-body p-4 space-y-2">
+                                    <div className="skeleton h-4 w-3/4"></div>
+                                    <div className="skeleton h-4 w-1/2"></div>
+                                    <div className="skeleton h-6 w-1/3"></div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             ))}
@@ -44,38 +53,32 @@ const Body = () => {
     );
 
     const renderProductSection = (content) => {
-        const filteredProducts = products.filter(product => 
+        const filteredProducts = products.filter(product =>
             content.idsProduct.includes(product._id)
         );
 
         return (
-            <div key={content._id}>
-                <p className='text-xl font-bold mb-6 mt-8'>{content.title}</p>
-                {loading ? (
-                    <LoadingSkeleton />
-                ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4">
-                        {filteredProducts.map(product => (
-                            <CardComponent
-                                key={product._id}
-                                _id={product._id}
-                                name={product.name}
-                                images={product.images}
-                                description={product.description}
-                                variants={product.variants}
-                            />
-                        ))}
-                    </div>
-                )}
+            <div key={content._id} className="mb-8">
+                <h2 className="text-xl font-semibold mb-4">{content.title}</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                    {filteredProducts.map(product => (
+                        <CardComponent
+                            key={product._id}
+                            _id={product._id}
+                            name={product.name}
+                            images={product.images}
+                            description={product.description}
+                            variants={product.variants}
+                        />
+                    ))}
+                </div>
             </div>
         );
     };
 
     return (
-        <div>
-            <div className='max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8'>
-                {contents.map(content => renderProductSection(content))}
-            </div>
+        <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            {loading ? <LoadingSkeleton /> : contents.map(content => renderProductSection(content))}
         </div>
     );
 };
