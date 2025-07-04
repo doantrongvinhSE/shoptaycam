@@ -394,19 +394,19 @@ const CheckoutPage = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Số tài khoản:</span>
-                      <span className="font-medium">1234567890</span>
+                      <span className="font-medium">BIDV</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Chủ tài khoản:</span>
-                      <span className="font-medium">CÔNG TY TNHH SHOP TAY CẦM</span>
+                      <span className="font-medium">Pressing Time</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Chi nhánh:</span>
-                      <span className="font-medium">Hồ Chí Minh</span>
+                      <span className="font-medium">HÀ Nội</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Nội dung chuyển khoản:</span>
-                      <span className="font-medium">SHOPTAYCAM [Số điện thoại của bạn]</span>
+                      <span className="font-medium">Pressing Time [Số điện thoại của bạn]</span>
                     </div>
                   </div>
                   <div className="mt-4 text-sm text-gray-500">
