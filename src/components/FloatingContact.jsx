@@ -47,6 +47,7 @@ const containerStyle = {
 export default function FloatingContact() {
   const [info, setInfo] = useState(null);
   const [hovered, setHovered] = useState("");
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     fetch("https://shoptaycambe-cf80e6e75521.herokuapp.com/api/config")
@@ -55,7 +56,20 @@ export default function FloatingContact() {
       .catch((err) => console.error("Lỗi lấy thông tin liên hệ:", err));
   }, []);
 
-  if (!info) return null;
+  // Theo dõi scroll để hiện/ẩn nút
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setShow(true);
+      } else {
+        setShow(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (!info || !show) return null;
 
   return (
     <div style={containerStyle}>

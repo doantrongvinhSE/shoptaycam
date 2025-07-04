@@ -7,6 +7,7 @@ import ScrollToTopButton from './components/ScrollToTopButton';
 import { CartProvider } from './context/CartContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import FloatingContact from "./components/FloatingContact";
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
             limit={3}
             style={{ zIndex: 9999 }}
           />
+          <FloatingContact />
         </div>
       </Router>
     </CartProvider>
