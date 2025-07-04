@@ -14,7 +14,8 @@ import {
   FaShieldAlt,
   FaChevronRight,
   FaMinus,
-  FaPlus
+  FaPlus,
+  FaInfoCircle
 } from "react-icons/fa"
 import "react-toastify/dist/ReactToastify.css"
 
@@ -25,6 +26,10 @@ const ProductDetailPage = ({ product }) => {
   const [isWishlisted, setIsWishlisted] = useState(false)
   const { addToCart, clearCart } = useCart()
   const navigate = useNavigate()
+  const [showFullDescription, setShowFullDescription] = useState(false)
+  const maxDescriptionLength = 150
+  const isLongDescription = product.description && product.description.length > maxDescriptionLength
+  const shortDescription = isLongDescription ? product.description.slice(0, maxDescriptionLength) + '...' : product.description
 
   // Get selected variant
   const selectedVariant = product.variants?.length > 0 
@@ -322,10 +327,6 @@ const ProductDetailPage = ({ product }) => {
                   </>
                 )}
               </div>
-
-              <p className="text-gray-600 leading-relaxed">
-                {product.description}
-              </p>
             </div>
 
             <hr className="border-gray-200" />
@@ -460,6 +461,26 @@ const ProductDetailPage = ({ product }) => {
                   </div>
                 </div>
               </div>
+            </div>
+            {/* Mô tả sản phẩm ở dưới cùng */}
+            <div className="bg-white rounded-xl shadow p-5 mt-6">
+              <div className="flex items-center mb-3">
+                <FaInfoCircle className="text-amber-500 mr-2" />
+                <h2 className="text-lg font-semibold text-gray-900">Miêu tả</h2>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                {showFullDescription || !isLongDescription ? product.description : shortDescription}
+              </p>
+              {isLongDescription && (
+                <div className="flex justify-end mt-2">
+                  <button
+                    className="text-amber-600 font-medium px-3 py-1 rounded hover:bg-amber-50 transition focus:outline-none"
+                    onClick={() => setShowFullDescription((prev) => !prev)}
+                  >
+                    {showFullDescription ? 'Thu gọn' : 'Xem thêm'}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
