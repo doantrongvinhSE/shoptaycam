@@ -390,7 +390,7 @@ const CheckoutPage = () => {
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Ngân hàng:</span>
-                      <span className="font-medium">Vietcombank</span>
+                      <span className="font-medium">BIDV</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Số tài khoản:</span>
