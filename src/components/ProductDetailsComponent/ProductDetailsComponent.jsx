@@ -421,7 +421,6 @@ const ProductDetailPage = ({ product }) => {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-base font-semibold text-gray-900">Miễn phí vận chuyển</h3>
-                    <p className="mt-1 text-sm text-gray-600">Cho đơn hàng trên 500.000đ</p>
                   </div>
                 </div>
               </div>
@@ -439,7 +438,6 @@ const ProductDetailPage = ({ product }) => {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-base font-semibold text-gray-900">Đổi trả dễ dàng</h3>
-                    <p className="mt-1 text-sm text-gray-600">Chính sách đổi trả trong 30 ngày</p>
                   </div>
                 </div>
               </div>
@@ -457,7 +455,6 @@ const ProductDetailPage = ({ product }) => {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-base font-semibold text-gray-900">Bảo hành chính hãng</h3>
-                    <p className="mt-1 text-sm text-gray-600">Thời hạn bảo hành 2 năm</p>
                   </div>
                 </div>
               </div>
