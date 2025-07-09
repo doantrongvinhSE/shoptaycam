@@ -414,7 +414,7 @@ const CheckoutPage = () => {
                     <ul className="list-disc list-inside space-y-1 mt-2">
                       <li>Vui lòng chuyển khoản đúng số tiền và nội dung</li>
                       <li>Đơn hàng sẽ được xử lý sau khi chúng tôi xác nhận được chuyển khoản</li>
-                      <li>Nếu cần hỗ trợ, vui lòng liên hệ hotline: 0123456789</li>
+                      <li>Nếu cần hỗ trợ, vui lòng liên hệ hotline: 0343383136</li>
                     </ul>
                   </div>
                 </div>

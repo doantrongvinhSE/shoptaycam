@@ -59,7 +59,11 @@ const Body = () => {
 
         return (
             <div key={content._id} className="mb-8">
-                <h2 className="text-xl font-semibold mb-4">{content.title}</h2>
+                <div className="mb-4 inline-block">
+                    <h2 className="text-2xl font-bold text-yellow-600 mb-1">
+                        {content.title}
+                    </h2>
+                </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                     {filteredProducts.map(product => (
                         <CardComponent
