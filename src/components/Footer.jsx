@@ -33,7 +33,7 @@ const Footer = () => {
                     <p>Địa Chỉ : {config.address}</p>
                     <p>Số điện thoại : {config.phone}</p>
                     <p>Email : {config.email}</p>
-                    <p>Website : www.shoptaycam.com</p>
+                    <p>Website : www.pressingtimestore.com</p>
                     <ul className="flex gap-3">
                         <li>
                             <a href={config.socialLinks?.facebook} target="_blank" rel="noopener noreferrer" className="text-2xl text-blue-600 transition-colors">
