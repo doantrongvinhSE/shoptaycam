@@ -50,7 +50,7 @@ export default function FloatingContact() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    fetch("https://shoptaycambe-cf80e6e75521.herokuapp.com/api/config")
+    fetch("https://taycambe.onrender.com/api/config")
       .then((res) => res.json())
       .then((data) => setInfo(data))
       .catch((err) => console.error("Lỗi lấy thông tin liên hệ:", err));
