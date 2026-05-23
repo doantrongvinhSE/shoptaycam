@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://taycambe.onrender.com';
+export const API_BASE_URL = 'https://chotdon.site';
 
 export const API_ENDPOINTS = {
   PRODUCTS: `${API_BASE_URL}/api/v1/products`,
