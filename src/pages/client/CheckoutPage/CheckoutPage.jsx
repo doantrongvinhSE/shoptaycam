@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCart } from '../../../context/CartContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiShoppingCart } from 'react-icons/fi';
 import useAddress from '../../../hooks/useAddress';
 import { API_ENDPOINTS } from '../../../config/api';
 import { normalizeImageUrl } from '../../../utils/imageUrl';
+import BankTransferPayment from '../../../components/Payment/BankTransferPayment';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -34,6 +35,42 @@ const CheckoutPage = () => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentInfo, setPaymentInfo] = useState(null);
+  const [pendingOrderId, setPendingOrderId] = useState(null);
+  const [isPaid, setIsPaid] = useState(false);
+  const [pollingError, setPollingError] = useState('');
+
+  useEffect(() => {
+    if (!pendingOrderId || isPaid) {
+      return undefined;
+    }
+
+    const checkPaymentStatus = async () => {
+      try {
+        const response = await fetch(`${API_ENDPOINTS.ORDERS}/${pendingOrderId}`);
+        const responseData = await response.json();
+
+        if (!response.ok || !responseData.success) {
+          throw new Error('Không thể kiểm tra trạng thái thanh toán');
+        }
+
+        setPollingError('');
+
+        if (responseData.data?.paymentStatus === 'PAID') {
+          setIsPaid(true);
+          clearCart();
+          navigate('/thank-you');
+        }
+      } catch {
+        setPollingError('Chưa kiểm tra được trạng thái thanh toán, hệ thống sẽ thử lại.');
+      }
+    };
+
+    checkPaymentStatus();
+    const intervalId = window.setInterval(checkPaymentStatus, 4000);
+
+    return () => window.clearInterval(intervalId);
+  }, [clearCart, isPaid, navigate, pendingOrderId]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -153,14 +190,7 @@ const CheckoutPage = () => {
         },
         paymentMethod: formData.paymentMethod === 'cod' ? 'COD' : 'BANK_TRANSFER',
         paymentStatus: 'PENDING',
-        orderStatus: 'PENDING',
-        bankTransferInfo: formData.paymentMethod === 'banking' ? {
-          bankName: 'Vietcombank',
-          accountNumber: '1234567890',
-          accountHolder: 'CÔNG TY TNHH SHOP TAY CẦM',
-          transferAmount: getCartTotal(),
-          transferNote: `SHOPTAYCAM ${formData.phone}`
-        } : undefined
+        orderStatus: 'PENDING'
       };
 
       const response = await fetch(API_ENDPOINTS.ORDERS, {
@@ -177,7 +207,17 @@ const CheckoutPage = () => {
         throw new Error(responseData.message || 'Failed to place order');
       }
       
-      // Clear cart and redirect on success
+      if (formData.paymentMethod === 'banking') {
+        if (!responseData.paymentInfo) {
+          throw new Error('Không nhận được thông tin thanh toán. Vui lòng thử lại.');
+        }
+
+        setPaymentInfo(responseData.paymentInfo);
+        setPendingOrderId(responseData.paymentInfo.orderId || responseData.data?._id);
+        setPollingError('');
+        return;
+      }
+
       clearCart();
       navigate('/thank-you');
     } catch (error) {
@@ -205,6 +245,17 @@ const CheckoutPage = () => {
           </Link>
         </div>
       </div>
+    );
+  }
+
+  if (paymentInfo) {
+    return (
+      <BankTransferPayment
+        paymentInfo={paymentInfo}
+        isPaid={isPaid}
+        pollingError={pollingError}
+        onBackToCart={() => setPaymentInfo(null)}
+      />
     );
   }
 
@@ -384,42 +435,6 @@ const CheckoutPage = () => {
                   <span className="ml-2">Chuyển khoản ngân hàng</span>
                 </label>
               </div>
-
-              {formData.paymentMethod === 'banking' && (
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                  <h3 className="text-md font-medium text-gray-900 mb-3">Thông tin chuyển khoản</h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Ngân hàng:</span>
-                      <span className="font-medium">BIDV</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Số tài khoản:</span>
-                      <span className="font-medium">BIDV</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Chủ tài khoản:</span>
-                      <span className="font-medium">Pressing Time</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Chi nhánh:</span>
-                      <span className="font-medium">HÀ Nội</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Nội dung chuyển khoản:</span>
-                      <span className="font-medium">Pressing Time [Số điện thoại của bạn]</span>
-                    </div>
-                  </div>
-                  <div className="mt-4 text-sm text-gray-500">
-                    <p className="font-medium text-amber-600">Lưu ý:</p>
-                    <ul className="list-disc list-inside space-y-1 mt-2">
-                      <li>Vui lòng chuyển khoản đúng số tiền và nội dung</li>
-                      <li>Đơn hàng sẽ được xử lý sau khi chúng tôi xác nhận được chuyển khoản</li>
-                      <li>Nếu cần hỗ trợ, vui lòng liên hệ hotline: 0343383136</li>
-                    </ul>
-                  </div>
-                </div>
-              )}
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6">
