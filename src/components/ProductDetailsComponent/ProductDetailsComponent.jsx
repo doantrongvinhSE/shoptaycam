@@ -18,6 +18,7 @@ import {
   FaInfoCircle
 } from "react-icons/fa"
 import "react-toastify/dist/ReactToastify.css"
+import { normalizeImageUrl } from "../../utils/imageUrl"
 
 const ProductDetailPage = ({ product }) => {
   const [selectedImage, setSelectedImage] = useState(0)
@@ -39,27 +40,25 @@ const ProductDetailPage = ({ product }) => {
   // Get variant image
   const getVariantImage = () => {
     if (!product.variants?.length) {
-      return product.images[0]
+      return normalizeImageUrl(product.images[0])
     }
 
     // Tìm variant chính xác với màu
     const exactVariant = product.variants.find(v => v.color === selectedColor)
     
     if (exactVariant?.image) {
-      return exactVariant.image
+      return normalizeImageUrl(exactVariant.image)
     }
 
     // Nếu không tìm thấy ảnh nào, trả về ảnh mặc định
-    return product.images[0]
+    return normalizeImageUrl(product.images[0])
   }
 
   // Get all images including main image and variant images
   const productImages = [
     ...(product.images || []),
-    ...(product.variants || [])
-      .filter(variant => variant.image && !product.images.includes(variant.image))
-      .map(variant => variant.image)
-  ].filter((image, index, self) => self.indexOf(image) === index) // Remove duplicates
+    ...(product.variants || []).map(variant => variant.image)
+  ].map(normalizeImageUrl).filter((image, index, self) => image && self.indexOf(image) === index) // Remove duplicates
 
   // Get colors from variants
   const colors = (product.variants || []).map(variant => {

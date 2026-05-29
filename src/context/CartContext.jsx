@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { normalizeImageUrl } from '../utils/imageUrl';
 
 const CartContext = createContext();
 
@@ -40,18 +41,20 @@ export const CartProvider = ({ children }) => {
       }
       
       // Nếu sản phẩm chưa tồn tại, thêm mới vào giỏ hàng
+      const image = normalizeImageUrl(selectedVariant?.image || product.image);
+
       const newItem = {
         _id: product._id,
         name: product.name,
         description: product.description,
-        image: selectedVariant?.image || product.image,
+        image,
         price: selectedVariant?.price || product.price,
         priceSale: selectedVariant?.salePrice || selectedVariant?.price || product.priceSale || product.price,
         quantity,
         selectedVariant: selectedVariant ? {
           color: selectedVariant.color,
           size: selectedVariant.size,
-          image: selectedVariant.image,
+          image,
           price: selectedVariant.price,
           salePrice: selectedVariant.salePrice || selectedVariant.price
         } : null

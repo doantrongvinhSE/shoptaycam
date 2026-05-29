@@ -9,6 +9,7 @@ import CartDropdown from "./CartDropdown/CartDropdown";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { API_ENDPOINTS } from '../config/api';
+import { normalizeImageUrl } from '../utils/imageUrl';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -106,7 +107,7 @@ const Header = () => {
       const transformedResults = response.data.map(product => ({
         _id: product._id,
         name: product.name,
-        image: product.images[0],
+        image: normalizeImageUrl(product.images[0]),
         priceSale: product.variants[0]?.salePrice || product.variants[0]?.price
       }));
       setSearchResults(transformedResults);

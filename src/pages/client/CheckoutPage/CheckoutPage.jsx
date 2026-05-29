@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiShoppingCart } from 'react-icons/fi';
 import useAddress from '../../../hooks/useAddress';
 import { API_ENDPOINTS } from '../../../config/api';
+import { normalizeImageUrl } from '../../../utils/imageUrl';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -137,7 +138,7 @@ const CheckoutPage = () => {
           productInfo: {
             name: item.name,
             price: item.priceSale || item.price,
-            image: item.selectedVariant?.image || item.image,
+            image: normalizeImageUrl(item.selectedVariant?.image || item.image),
             sku: item.sku || `${item._id}-${item.selectedVariant?.color || 'default'}-${item.selectedVariant?.size || 'default'}`
           },
           quantity: item.quantity,
@@ -444,7 +445,7 @@ const CheckoutPage = () => {
               {cartItems.map((item) => (
                 <div key={`${item._id}-${item.selectedVariant?.color || 'default'}-${item.selectedVariant?.size || 'default'}`} className="flex items-center gap-4">
                   <img
-                    src={item.selectedVariant?.image || item.image}
+                    src={normalizeImageUrl(item.selectedVariant?.image || item.image)}
                     alt={item.name}
                     className="w-16 h-16 object-cover rounded"
                   />

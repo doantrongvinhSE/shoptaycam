@@ -2,6 +2,7 @@ import React from 'react';
 import { useCart } from '../../../context/CartContext';
 import { FiTrash2, FiMinus, FiPlus } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { normalizeImageUrl } from '../../../utils/imageUrl';
 
 const CartPage = () => {
   const { cartItems, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart();
@@ -38,7 +39,7 @@ const CartPage = () => {
               >
                 <Link to={`/product/${item._id}`}>
                   <img
-                    src={item.selectedVariant?.image || item.image}
+                    src={normalizeImageUrl(item.selectedVariant?.image || item.image)}
                     alt={item.name}
                     className="w-24 h-24 object-cover rounded hover:opacity-90 transition-opacity"
                   />

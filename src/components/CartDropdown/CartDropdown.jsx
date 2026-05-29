@@ -2,6 +2,7 @@ import React from 'react';
 import { useCart } from '../../context/CartContext';
 import { FiTrash2, FiMinus, FiPlus } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { normalizeImageUrl } from '../../utils/imageUrl';
 
 const CartDropdown = () => {
   const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
@@ -25,7 +26,7 @@ const CartDropdown = () => {
           <div key={`${item._id}-${item.selectedVariant?.color || 'default'}-${item.selectedVariant?.size || 'default'}`} className="flex items-center gap-4 py-3 border-b border-gray-100">
             <Link to={`/product/${item._id}`}>
               <img
-                src={item.selectedVariant?.image || item.image}
+                src={normalizeImageUrl(item.selectedVariant?.image || item.image)}
                 alt={item.name}
                 className="w-16 h-16 object-cover rounded hover:opacity-90 transition-opacity"
               />

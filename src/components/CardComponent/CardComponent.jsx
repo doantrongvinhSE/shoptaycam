@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { normalizeImageUrl } from '../../utils/imageUrl';
 
 const CardComponent = ({ _id, name, description, images, variants }) => {
     const { addToCart } = useCart();
@@ -15,7 +16,7 @@ const CardComponent = ({ _id, name, description, images, variants }) => {
     const defaultVariant = variants?.[0];
     const price = defaultVariant?.price;
     const priceSale = defaultVariant?.salePrice || price;
-    const image = images?.[0];
+    const image = normalizeImageUrl(images?.[0]);
 
     const handleAddToCart = (e) => {
         e.preventDefault();
