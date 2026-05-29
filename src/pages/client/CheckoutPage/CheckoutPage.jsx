@@ -179,7 +179,7 @@ const CheckoutPage = () => {
             sku: item.sku || `${item._id}-${item.selectedVariant?.color || 'default'}-${item.selectedVariant?.size || 'default'}`
           },
           quantity: item.quantity,
-          price: (item.priceSale || item.price) * item.quantity
+          price: item.priceSale || item.price
         })),
         totalAmount: getCartTotal(),
         shippingAddress: {
