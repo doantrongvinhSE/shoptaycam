@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://chotdon.site';
+export const API_BASE_URL = 'https://chotdot.site';
 
 export const API_ENDPOINTS = {
   PRODUCTS: `${API_BASE_URL}/api/v1/products`,
