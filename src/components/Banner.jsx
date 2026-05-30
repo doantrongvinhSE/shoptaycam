@@ -75,12 +75,15 @@ const Banner = () => {
                 modules={[Autoplay, Pagination, Navigation]}
                 className="mySwiper"
             >
-                {config.banners && config.banners.map((bannerImage, index) => (
-                    <SwiperSlide key={index}>
+                {config.banners && config.banners.map((bannerImage, index) => {
+                    const bannerUrl = typeof bannerImage === 'string' ? bannerImage : bannerImage.url;
+
+                    return (
+                    <SwiperSlide key={bannerImage.public_id || bannerUrl || index}>
                         <div
                             className="hero min-h-[400px] md:min-h-[650px] bg-cover bg-center bg-no-repeat"
                             style={{
-                                backgroundImage: `url('${bannerImage}')`,
+                                backgroundImage: `url('${bannerUrl}')`,
                                 backgroundPosition: 'center center'
                             }}
                         >
@@ -96,7 +99,8 @@ const Banner = () => {
                             </div> */}
                         </div>
                     </SwiperSlide>
-                ))}
+                    );
+                })}
             </Swiper>
         </>
     );
