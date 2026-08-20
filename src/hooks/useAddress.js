@@ -1,55 +1,94 @@
 import { useState, useEffect } from 'react';
 
+const API_URL = 'https://provinces.open-api.vn/api/v1';
+
 const useAddress = () => {
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
+
   const [selectedProvince, setSelectedProvince] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
-  const [loading, setLoading] = useState(false);
 
+  const [loadingProvinces, setLoadingProvinces] = useState(false);
+  const [loadingDistricts, setLoadingDistricts] = useState(false);
+  const [loadingWards, setLoadingWards] = useState(false);
+
+  // =========================
   // Lấy danh sách tỉnh/thành phố
+  // =========================
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
-        setLoading(true);
-        const response = await fetch('https://provinces.open-api.vn/api/?depth=1');
+        setLoadingProvinces(true);
+
+        const response = await fetch(`${API_URL}/p/`);
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch provinces');
+        }
+
         const data = await response.json();
+
         setProvinces(data);
       } catch (error) {
         console.error('Error fetching provinces:', error);
+        setProvinces([]);
       } finally {
-        setLoading(false);
+        setLoadingProvinces(false);
       }
     };
 
     fetchProvinces();
   }, []);
 
-  // Lấy danh sách quận/huyện khi chọn tỉnh/thành phố
+  // =========================
+  // Lấy danh sách quận/huyện
+  // =========================
   useEffect(() => {
     const fetchDistricts = async () => {
       if (!selectedProvince) {
         setDistricts([]);
+        setWards([]);
+        setSelectedDistrict('');
         return;
       }
 
       try {
-        setLoading(true);
-        const response = await fetch(`https://provinces.open-api.vn/api/p/${selectedProvince}?depth=2`);
+        setLoadingDistricts(true);
+
+        const response = await fetch(
+          `${API_URL}/p/${selectedProvince}?depth=2`
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch districts');
+        }
+
         const data = await response.json();
-        setDistricts(data.districts);
+
+        setDistricts(data.districts || []);
+
+        // Reset district và ward khi đổi province
+        setSelectedDistrict('');
+        setWards([]);
       } catch (error) {
         console.error('Error fetching districts:', error);
+
+        setDistricts([]);
+        setSelectedDistrict('');
+        setWards([]);
       } finally {
-        setLoading(false);
+        setLoadingDistricts(false);
       }
     };
 
     fetchDistricts();
   }, [selectedProvince]);
 
-  // Lấy danh sách phường/xã khi chọn quận/huyện
+  // =========================
+  // Lấy danh sách phường/xã
+  // =========================
   useEffect(() => {
     const fetchWards = async () => {
       if (!selectedDistrict) {
@@ -58,14 +97,24 @@ const useAddress = () => {
       }
 
       try {
-        setLoading(true);
-        const response = await fetch(`https://provinces.open-api.vn/api/d/${selectedDistrict}?depth=2`);
+        setLoadingWards(true);
+
+        const response = await fetch(
+          `${API_URL}/d/${selectedDistrict}?depth=2`
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch wards');
+        }
+
         const data = await response.json();
-        setWards(data.wards);
+
+        setWards(data.wards || []);
       } catch (error) {
         console.error('Error fetching wards:', error);
+        setWards([]);
       } finally {
-        setLoading(false);
+        setLoadingWards(false);
       }
     };
 
@@ -73,15 +122,30 @@ const useAddress = () => {
   }, [selectedDistrict]);
 
   return {
+    // Data
     provinces,
     districts,
     wards,
+
+    // Selected values
     selectedProvince,
-    setSelectedProvince,
     selectedDistrict,
+
+    // Setters
+    setSelectedProvince,
     setSelectedDistrict,
-    loading
+
+    // Loading
+    loadingProvinces,
+    loadingDistricts,
+    loadingWards,
+
+    // Loading tổng
+    loading:
+      loadingProvinces ||
+      loadingDistricts ||
+      loadingWards,
   };
 };
 
-export default useAddress; 
+export default useAddress;
